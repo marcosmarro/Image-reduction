@@ -4,6 +4,9 @@
 # @Filename: darks.py
 # @License: BSD 3-clause (http://www.opensource.org/licenses/BSD-3-Clause)
 
+from astropy.io import fits
+from astropy.stats import sigma_clip
+import numpy
 
 def create_median_dark(dark_list, bias_filename, median_dark_filename):
     """This function must:
@@ -23,10 +26,33 @@ def create_median_dark(dark_list, bias_filename, median_dark_filename):
 
     """
 
-    # This is a placeholder for the actual implementation.
-    median_dark = None
+    bias = fits.getdata(bias_filename)
+    dark_bias_data = []
 
-    # See code in create_median_bias for how to create a new FITS file
-    # from the resulting median dark frame.
+    # Will read each file and append to dark_bias_data list where the arrays have dtype = float32
+    for file in dark_list:
+        dark = fits.open(file)
+        dark_data = dark[0].data.astype('f4')
+        exptime = dark[0].header['EXPTIME']
 
+        # Subtracts bias from each dark image
+        dark_data_no_bias = dark_data - bias
+        
+        # Divides each dark image (with bias subtracted) by the exposure time to get dark current, and adds to list
+        dark_bias_data.append(dark_data_no_bias / exptime) 
+
+    # Reads the list of darks and sigma clips the arrays
+    dark_sc = sigma_clip(dark_bias_data, cenfunc='median', sigma=3, axis=0)
+
+    # Creates a final 2D array that is the mean of each pixel from all different darks
+    median_dark = numpy.ma.mean(dark_sc, axis=0)
+
+    # Create a new FITS file from the resulting median dark frame.
+    dark_hdu = fits.PrimaryHDU(data=median_dark.data, header=fits.Header())
+    dark_hdu.header['EXPTIME'] = 1
+    dark_hdu.header['COMMENT'] = 'Combined dark image with bias subtracted'
+    hdul = fits.HDUList([dark_hdu])
+    hdul.writeto(median_dark_filename, overwrite=True)
+
+    
     return median_dark

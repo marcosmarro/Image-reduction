@@ -4,6 +4,8 @@
 # @Filename: science.py
 # @License: BSD 3-clause (http://www.opensource.org/licenses/BSD-3-Clause)
 
+from astropy.io import fits
+from astroscrappy import detect_cosmics
 
 def reduce_science_frame(
     science_filename,
@@ -34,7 +36,27 @@ def reduce_science_frame(
 
     """
 
-    # This is a placeholder for the actual implementation.
-    reduced_science = None
+    # Reads all the files and grabs data
+    science = fits.getdata(science_filename)
+    bias = fits.getdata(median_bias_filename)
+    flat = fits.getdata(median_flat_filename)
+    dark = fits.getdata(median_dark_filename)
+
+    exposure_time = science[0].header['EXPTIME']
+
+    # Removes bias and dark frames, and corrects by dividing by flat frame
+    science -= bias 
+    science -= exposure_time * dark
+    science /= flat
+
+    # Removal of cosmic rays
+    mask, cleaned = detect_cosmics(science)
+    reduced_science = cleaned
+
+    # Create a new FITS file from the resulting reduced science frame.
+    science_hdu = fits.PrimaryHDU(data=reduced_science.data, header=fits.Header())
+    science_hdu.header['COMMENT'] = 'Reduced science image correcting from all 3 frames (bias, dark, and flat).'
+    hdul = fits.HDUList([science_hdu])
+    hdul.writeto(reduced_science_filename, overwrite=True)
 
     return reduced_science

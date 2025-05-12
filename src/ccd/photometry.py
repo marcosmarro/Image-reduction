@@ -4,6 +4,9 @@
 # @Filename: photometry.py
 # @License: BSD 3-clause (http://www.opensource.org/licenses/BSD-3-Clause)
 
+from astropy.io import fits
+from astropy.stats import sigma_clip
+import numpy
 
 def do_aperture_photometry(
     image,
@@ -31,7 +34,8 @@ def do_aperture_photometry(
 
     """
 
-    # This is a placeholder for the actual implementation.
+    data = fits.getdata(image)
+    
 
     return
 
