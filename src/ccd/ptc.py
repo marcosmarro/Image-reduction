@@ -29,7 +29,7 @@ def calculate_gain(files):
     mean_signal = 0.5 * numpy.mean(flat1 + flat2)
 
     # Calculate the gain
-    gain = 2 * mean_signal / flat_diff_var
+    gain = (2 * mean_signal / flat_diff_var).astype(numpy.float64)
 
     return gain
 
@@ -57,6 +57,6 @@ def calculate_readout_noise(files, gain):
     
     # Calculate the readout noise
     readout_noise_adu = numpy.sqrt(bias_diff_var / 2)
-    readout_noise = readout_noise_adu * gain
+    readout_noise = (readout_noise_adu * gain).astype(numpy.float64)
 
     return readout_noise

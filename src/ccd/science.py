@@ -37,7 +37,8 @@ def reduce_science_frame(
     """
 
     # Reads all the files and grabs data
-    science = fits.getdata(science_filename)
+    science = fits.open(science_filename)
+    science_data = science[0].data.astype('f4')
     bias = fits.getdata(median_bias_filename)
     flat = fits.getdata(median_flat_filename)
     dark = fits.getdata(median_dark_filename)
@@ -45,12 +46,12 @@ def reduce_science_frame(
     exposure_time = science[0].header['EXPTIME']
 
     # Removes bias and dark frames, and corrects by dividing by flat frame
-    science -= bias 
-    science -= exposure_time * dark
-    science /= flat
+    science_data -= bias 
+    science_data -= exposure_time * dark
+    science_data /= flat
 
     # Removal of cosmic rays
-    mask, cleaned = detect_cosmics(science)
+    mask, cleaned = detect_cosmics(science_data)
     reduced_science = cleaned
 
     # Create a new FITS file from the resulting reduced science frame.

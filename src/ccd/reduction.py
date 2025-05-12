@@ -17,6 +17,6 @@ def run_reduction():
     PNG or PDF files.
 
     """
-
+    
     
     return
