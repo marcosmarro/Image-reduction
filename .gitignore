@@ -2,6 +2,8 @@
 __pycache__/
 *.py[cod]
 *$py.class
+ccd_reductions_data.tar.bz2
+ccd_reductions_data/
 
 *.DS_Store
 

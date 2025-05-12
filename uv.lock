@@ -8,6 +8,7 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "astropy" },
+    { name = "astroscrappy" },
     { name = "matplotlib" },
     { name = "numpy" },
     { name = "photutils" },
@@ -28,6 +29,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "astropy", specifier = ">=7.0.1" },
+    { name = "astroscrappy", specifier = ">=1.2.0" },
     { name = "matplotlib", specifier = ">=3.10.1" },
     { name = "numpy", specifier = ">=2.0.0" },
     { name = "photutils", specifier = ">=2.2.0" },
@@ -81,6 +83,23 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/ae/ae/5ae6984fbc97cf408c95fc02ffc805fe4af7aca6a97400eedfee58953f9a/astropy_iers_data-0.2025.4.14.0.37.22.tar.gz", hash = "sha256:4a4c8e3fbbaa25dcd7cb453b05caf93ff10b7acf2cd99fb933cc4f622967ad91", size = 1898796 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/28/10/8e67820b9b8546bb33772ca396dddce162e476ae38490ee6854e61ec62a7/astropy_iers_data-0.2025.4.14.0.37.22-py3-none-any.whl", hash = "sha256:3942c0201d6062ac2dac7df7e23b67a04feb71cf1c59d623019afb9b178b895c", size = 1951900 },
+]
+
+[[package]]
+name = "astroscrappy"
+version = "1.2.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "astropy" },
+    { name = "numpy" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/e9/00/89fe3306d131a8fa3fefef1429af500a1416a1f4ff65a4aafe883743ee59/astroscrappy-1.2.0.tar.gz", hash = "sha256:cea1ae2199893b6c1cb2f9b646d8e215f1bf06f1266f2da70f40e41ad1a34a64", size = 556560 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/62/1e/604fdd6199fdbf9cf651ad079d2be236c80cc286ca6f1339e1000b05b8ab/astroscrappy-1.2.0-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:9c90fd7c00c0c53412209c7ce8fd7343c0fb4bc18934db2589324018bbb08930", size = 768581 },
+    { url = "https://files.pythonhosted.org/packages/a5/7c/83b07c3c007f80e3bcc6c23e6aab58cc621bb2156c885b8565d65a934ab9/astroscrappy-1.2.0-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:6892748945b9bcb740b71de9e0847c39651c5b2ba127c2ecacde851dfe2f85e9", size = 752888 },
+    { url = "https://files.pythonhosted.org/packages/56/b8/98a7f30ffa63ad5c9aada0f88c5dd5f7dfe5502f4a00831a61e09c5029fa/astroscrappy-1.2.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:cf909790f251e3df7d3ae46e343885b3c89faa5fe2a1d18b6dbdaa7896a3ea2b", size = 1917385 },
+    { url = "https://files.pythonhosted.org/packages/d6/3c/1a307141e561777e2e39ad31475ee974283712c12fde909065e54dd9b337/astroscrappy-1.2.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:0f94dbc3669b0404a2c3dd42081609b194fcd4a04bb0eeb4bd9aa7bfe46af2a1", size = 1939033 },
+    { url = "https://files.pythonhosted.org/packages/21/9a/5ee9e9584b47821fce228e642b3fb605e675d837374c0feef618ce56110e/astroscrappy-1.2.0-cp312-cp312-win_amd64.whl", hash = "sha256:135ef4942079d10c31118c2eb437ee636074904c966d05f211eb83fa9ac84e24", size = 750152 },
 ]
 
 [[package]]
