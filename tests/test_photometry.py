@@ -17,7 +17,7 @@ def test_plot_radial_profile(tmp_path: pathlib.Path):
 
     from ccd.photometry import do_aperture_photometry, plot_radial_profile
 
-    data = load_star_image()
+    data = load_star_image().data
     hdul = fits.HDUList([fits.PrimaryHDU(data=data)])
     hdul.writeto(str(tmp_path / "test_image.fits"), overwrite=True)
 

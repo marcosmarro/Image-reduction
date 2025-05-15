@@ -38,7 +38,7 @@ def reduce_science_frame(
 
     # Reads all the files and grabs data
     science = fits.open(science_filename)
-    science_data = science[0].data.astype('f4')
+    science_data = science[0].data[1536:2560, 1536:2560].astype('f4')
     bias = fits.getdata(median_bias_filename)
     flat = fits.getdata(median_flat_filename)
     dark = fits.getdata(median_dark_filename)
