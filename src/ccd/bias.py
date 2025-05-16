@@ -23,6 +23,7 @@ def create_median_bias(bias_list, median_bias_filename):
     """
 
     bias_images = []
+    print(bias_list)
 
     # Will read each file and append to bias_images list where the arrays have dtype = float32
     for bias in bias_list:
