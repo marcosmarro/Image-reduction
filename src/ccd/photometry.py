@@ -84,15 +84,17 @@ def plot_radial_profile(aperture_photometry_data, output_filename="radial_profil
     """
     
     plt.figure()
+    # For loop to read each different position and plot the corresponding radial profile 
     for key in aperture_photometry_data:
         position = key
         radii = numpy.array(aperture_photometry_data[key][0])
         fluxes = numpy.array(aperture_photometry_data[key][1])
         raw_fluxes = numpy.array(aperture_photometry_data[key][2])
-        plt.plot(radii, fluxes / raw_fluxes)
+        plt.plot(radii, fluxes / raw_fluxes, label=f"(x, y) = {position}") # fluxes / raw_fluxes so we get the total fraction that is signal
         plt.xlabel('Radius')
         plt.ylabel('Normalized Flux')
-
+        
+    plt.legend(loc='best')
     plt.title('Radial Profile of object(s)')
     plt.savefig(output_filename, dpi=500, bbox_inches='tight')
 

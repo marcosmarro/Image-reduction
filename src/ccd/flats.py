@@ -55,6 +55,7 @@ def create_median_flat(
     # flat value to normalize
     flat = numpy.ma.mean(flat_sc, axis=0)
 
+    # Normalizes the resulting flat to get the median flat
     median_flat = flat / numpy.median(flat)
 
     # Create a new FITS file from the resulting median dark frame.
