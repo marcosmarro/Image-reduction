@@ -59,8 +59,8 @@ for i in range(0, 143):
 ratio = numpy.array(target_flux) / numpy.array(comparison_flux)
 time = (numpy.array(time_stamps) - numpy.min(time_stamps)) * 24 * 60  # Sets time to minutes after first observation
 
-breakpoint()
 plt.plot(time, ratio)
 plt.xlabel('Minutes after observation')
+plt.ylabel('Target / Comparison flux ratio')
 plt.savefig('differential_light_curve.png', dpi=300)
 plt.show()

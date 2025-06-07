@@ -1,3 +1,3 @@
 # ASTR 480 Assignments Template
 
-Template to create ASTR 480 assignments.
+Image reduction and analysis for telescope images.
