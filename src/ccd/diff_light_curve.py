@@ -54,7 +54,7 @@ for i in range(0, 143):
 
     # Appends flux of target and mean of two comparison objects to their respective lists
     target_flux.append(aperture_photometry_data[position[0]][1][0])
-    comparison_flux.append(numpy.mean(aperture_photometry_data[position[1]][1][0] + aperture_photometry_data[position[2]][1][0])) 
+    comparison_flux.append(.5 * (aperture_photometry_data[position[1]][1][0] + aperture_photometry_data[position[2]][1][0])) 
 
 ratio = numpy.array(target_flux) / numpy.array(comparison_flux)
 time = (numpy.array(time_stamps) - numpy.min(time_stamps)) * 24 * 60  # Sets time to minutes after first observation
