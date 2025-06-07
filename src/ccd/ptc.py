@@ -18,8 +18,8 @@ def calculate_gain(files):
     """
 
     # Get the first two flats from the list, making sure we get from the center since edges are nonuniform
-    flat1 = fits.getdata(files[0]).astype('f4')[1536:2560, 1536:2560]
-    flat2 = fits.getdata(files[1]).astype('f4')[1536:2560, 1536:2560]
+    flat1 = fits.getdata(files[0]).astype('f4')[100:-100, 100:-100]
+    flat2 = fits.getdata(files[1]).astype('f4')[100:-100, 100:-100]
     
     # Calculate the variance of the difference between the two images
     flat_diff = flat1 - flat2
@@ -48,8 +48,8 @@ def calculate_readout_noise(files, gain):
 
     # Get the first two biases from the list, where we can use a very large region since the bias level is very flat.
     # So we just trim the images to remove the contribution from the edge pixels.
-    bias1 = fits.getdata(files[0]).astype('f4')[1000:-1000, 1000:-1000]
-    bias2 = fits.getdata(files[1]).astype('f4')[1000:-1000, 1000:-1000]
+    bias1 = fits.getdata(files[0]).astype('f4')[100:-100, 100:-100]
+    bias2 = fits.getdata(files[1]).astype('f4')[100:-100, 100:-100]
     
     # Calculate the variance of the difference between the two images
     bias_diff = bias1 - bias2

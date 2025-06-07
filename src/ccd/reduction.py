@@ -6,7 +6,8 @@
 
 import pathlib
 import numpy
-
+import os
+import pdb
 
 def run_reduction(data_dir):
     """This function must run the entire CCD reduction process. You can implement it
@@ -21,35 +22,38 @@ def run_reduction(data_dir):
 
     """
     
-    from ccd.bias import create_median_bias
-    from ccd.darks import create_median_dark
-    from ccd.flats import create_median_flat, plot_flat
-    from ccd.photometry import do_aperture_photometry, plot_radial_profile
-    from ccd.ptc import calculate_gain, calculate_readout_noise
-    from ccd.science import reduce_science_frame
+    import glob
+    from bias import create_median_bias
+    from darks import create_median_dark
+    from flats import create_median_flat, plot_flat
+    from photometry import do_aperture_photometry, plot_radial_profile
+    from ptc import calculate_gain, calculate_readout_noise
+    from science import reduce_science_frame
 
+
+    current_dir = os.getcwd()
+    print(current_dir)
 
     # Collects all the different types of images from the given directory, and sorts them in a list
-    bias_files = sorted(pathlib.Path(data_dir).glob("Bias*.fit*"))
-    dark_files = sorted(pathlib.Path(data_dir).glob("Dark*.fit*"))
-    flat_files = sorted(pathlib.Path(data_dir).glob("AutoFlat*.fit*"))
-    science_files = sorted(pathlib.Path(data_dir).glob("kelt*.fit*"))
-
+    bias_files = sorted(glob.glob(data_dir + "Bias*"))
+    dark_files = sorted(glob.glob(data_dir + "Dark*"))
+    flat_files = sorted(glob.glob(data_dir + "domeflat*"))
+    science_files = sorted(glob.glob(data_dir + "LPSEB*"))
 
     # Naming of the median filenames for the biases, darks, and flats
-    median_bias_filename = './Median-Bias.fits'
-    median_dark_filename = './Median-Dark.fits'
-    median_flat_filename = './Median-AutoFlat.fits'
+    median_bias_filename = data_dir + 'Median-Bias.fits'
+    median_dark_filename = data_dir + 'Median-Dark.fits'
+    median_flat_filename = data_dir + 'Median-AutoFlat.fits'
 
-
+    breakpoint()
     # Creates the medians from the list of biases, darks, and flats
     median_bias = create_median_bias(bias_files, median_bias_filename)
     median_dark = create_median_dark(dark_files, median_bias_filename, median_dark_filename)
-    median_flat = create_median_flat(flat_files, median_bias_filename, median_flat_filename)
+    median_flat = create_median_flat(flat_files, median_bias_filename, median_flat_filename, median_dark_filename)
 
 
     # Creates the plot for the median flat
-    plot_flat(median_flat_filename, ouput_filename="median_flat.png", profile_ouput_filename="median_flat_profile.png")
+    plot_flat(median_flat_filename, ouput_filename=data_dir + "median_flat.png", profile_ouput_filename=data_dir + "median_flat_profile.png")
     
 
     # Calculates and prints out the gain and readout noise from the list of flats and biases, respectively
@@ -69,13 +73,13 @@ def run_reduction(data_dir):
         median_bias_filename,
         median_flat_filename,
         median_dark_filename,
-        reduced_science_filename=f"reduced_science{i+1}.fits"
+        reduced_science_filename=f"{data_dir}reduced_science{i+1}.fits"
         )
 
 
 
     # Selects one of the reduced science files to perform aperture photometry    
-    reduced_science_files = sorted(pathlib.Path('./').glob("reduced_science*.fit*"))
+    reduced_science_files = sorted(glob.glob(data_dir + "reduced_science*.fit*"))
     reduced_science_image = reduced_science_files[0]
 
 
@@ -96,7 +100,12 @@ def run_reduction(data_dir):
 
 
     # Plots the radial profile after receiving the aperture photometry data
-    plot_radial_profile(aperture_photometry_data, output_filename="radial_profile.png")
+    plot_radial_profile(aperture_photometry_data, output_filename=data_dir + "radial_profile.png")
     
     
     return
+
+
+data_dir = '../../20250529/'
+
+run_reduction(data_dir)

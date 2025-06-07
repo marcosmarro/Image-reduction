@@ -28,12 +28,14 @@ def create_median_dark(dark_list, bias_filename, median_dark_filename):
 
     bias = fits.getdata(bias_filename)
     dark_bias_data = []
+    exp_times = []
 
     # Will read each file and append to dark_bias_data list where the arrays have dtype = float32
     for file in dark_list:
         dark = fits.open(file)
-        dark_data = dark[0].data[1536:2560, 1536:2560].astype('f4')
+        dark_data = dark[0].data[100:-100, 100:-100].astype('f4')
         exptime = dark[0].header['EXPTIME']
+        exp_times.append(exptime)
 
         # Subtracts bias from each dark image
         dark_data_no_bias = dark_data - bias
@@ -49,7 +51,7 @@ def create_median_dark(dark_list, bias_filename, median_dark_filename):
 
     # Create a new FITS file from the resulting median dark frame.
     dark_hdu = fits.PrimaryHDU(data=median_dark.data, header=fits.Header())
-    dark_hdu.header['EXPTIME'] = 1
+    dark_hdu.header['EXPTIME'] = numpy.mean(exp_times)
     dark_hdu.header['COMMENT'] = 'Combined dark image with bias subtracted'
     hdul = fits.HDUList([dark_hdu])
     hdul.writeto(median_dark_filename, overwrite=True)

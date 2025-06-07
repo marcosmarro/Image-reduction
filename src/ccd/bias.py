@@ -4,6 +4,7 @@
 # @Filename: bias.py
 # @License: BSD 3-clause (http://www.opensource.org/licenses/BSD-3-Clause)
 
+import pdb
 from astropy.io import fits
 from astropy.stats import sigma_clip
 import numpy
@@ -23,10 +24,10 @@ def create_median_bias(bias_list, median_bias_filename):
     """
 
     bias_images = []
-
+    
     # Will read each file and append to bias_images list where the arrays have dtype = float32
     for bias in bias_list:
-        bias_data = fits.getdata(bias)[1536:2560, 1536:2560]
+        bias_data = fits.getdata(bias)[100:-100, 100:-100]
         bias_images.append(bias_data.astype('f4'))
 
     # Reads the list of biases and sigma clips the arrays
@@ -40,5 +41,4 @@ def create_median_bias(bias_list, median_bias_filename):
     primary = fits.PrimaryHDU(data=median_bias.data, header=fits.Header())
     hdul = fits.HDUList([primary])
     hdul.writeto(median_bias_filename, overwrite=True)
-
     return median_bias

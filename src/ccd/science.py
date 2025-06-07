@@ -38,7 +38,9 @@ def reduce_science_frame(
 
     # Reads all the files and grabs their respective array
     science = fits.open(science_filename)
-    science_data = science[0].data[1536:2560, 1536:2560].astype('f4')
+    JD = science[0].header['JD-OBS']
+
+    science_data = science[0].data[100:-100, 100:-100].astype('f4')
     median_bias = fits.getdata(median_bias_filename)
     median_flat = fits.getdata(median_flat_filename)
     median_dark = fits.getdata(median_dark_filename)
@@ -58,6 +60,7 @@ def reduce_science_frame(
     # Create a new FITS file from the resulting reduced science frame.
     science_hdu = fits.PrimaryHDU(data=reduced_science.data, header=fits.Header())
     science_hdu.header['COMMENT'] = 'Reduced science image correcting from all 3 frames (bias, dark, and flat).'
+    science_hdu.header['JD-OBS'] = JD
     hdul = fits.HDUList([science_hdu])
     hdul.writeto(reduced_science_filename, overwrite=True)
 

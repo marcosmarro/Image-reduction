@@ -14,7 +14,7 @@ def create_median_flat(
     flat_list,
     bias_filename,
     median_flat_filename,
-    dark_filename=None,
+    dark_filename,
 ):
     """This function must:
 
@@ -38,15 +38,21 @@ def create_median_flat(
     """
 
     bias = fits.getdata(bias_filename)
+
+    dark = fits.getdata(dark_filename)
+    dark_file = fits.open(dark_filename)
+    dark_exptime = dark_file[0].header['EXPTIME']
+
     flat_bias_data = []
 
     # Will read each file and append to dark_bias_data list where the arrays have dtype = float32
     for file in flat_list:
         flat = fits.open(file)
-        flat_data = flat[0].data[1536:2560, 1536:2560].astype('f4')
+        flat_data = flat[0].data[100:-100, 100:-100].astype('f4')
+        flat_exptime = flat[0].header['EXPTIME']
 
         # Subtracts bias from each flat and adds to flat_bias_data list
-        flat_bias_data.append(flat_data - bias) 
+        flat_bias_data.append(flat_data - bias - dark * flat_exptime / dark_exptime) 
 
     # Reads the list of flats and sigma clips the arrays
     flat_sc = sigma_clip(flat_bias_data, cenfunc='median', sigma=3, axis=0)
@@ -63,7 +69,7 @@ def create_median_flat(
     flat_hdu.header['COMMENT'] = 'Normalized flat image with bias subtracted'
     hdul = fits.HDUList([flat_hdu])
     hdul.writeto(median_flat_filename, overwrite=True)
-
+ 
     return median_flat
 
 
