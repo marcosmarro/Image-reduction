@@ -45,7 +45,7 @@ def run_reduction(data_dir):
     median_dark_filename = data_dir + 'Median-Dark.fits'
     median_flat_filename = data_dir + 'Median-AutoFlat.fits'
 
-    breakpoint()
+    
     # Creates the medians from the list of biases, darks, and flats
     median_bias = create_median_bias(bias_files, median_bias_filename)
     median_dark = create_median_dark(dark_files, median_bias_filename, median_dark_filename)
